@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>タスク編集</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css"
+	rel="stylesheet" />
+	
+	<link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<script type="text/javascript">
+	 $(document).ready(
+		function() {
+			var dateInput = $('input[name="scheduled_date"]'); // Our date input has the name "date"
+			var container = $('.bootstrap-iso form').length > 0 ? $(
+					'.bootstrap-iso form').parent() : 'body';
+			dateInput.datepicker({
+				format : 'mm/dd/yyyy',
+				container : container,
+				todayHighlight : true,
+				autoclose : true,
+				startDate : truncateDate(new Date())
+			// <-- THIS WORKS
+			});
+
+			$('#scheduled_date').datepicker('setStartDate',
+					truncateDate(new Date())); // <-- SO DOES THIS
+		}
+	);
+	 
+ 	$(document).ready(
+			function() {
+				var dateInput = $('input[name="complete_date"]'); // Our date input has the name "date"
+				var container = $('.bootstrap-iso form').length > 0 ? $(
+						'.bootstrap-iso form').parent() : 'body';
+				dateInput.datepicker({
+					format : 'mm/dd/yyyy',
+					container : container,
+					todayHighlight : true,
+					autoclose : true,
+					startDate : truncateDate(new Date())
+				// <-- THIS WORKS
+				});
+
+				$('#complete_date').datepicker('setStartDate',
+						truncateDate(new Date())); // <-- SO DOES THIS
+			}	
+		); 
+	
+ 	$(document).ready(function(){
+ 	    $("#complete_flg").click(function(){
+ 	        if($(this).is(':checked')){
+ 	        	$("#complete_flg").val("1"));
+ 	        
+ 	        }else{
+ 	//uncheck - clear input
+ 	        $("#complete_flg").val("0");
+ 	       
+ 	        }
+ 	    });
+ 	});
+	
+	function truncateDate(date) {
+		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	};
+	
+	$('#dd-priority').select2() 
+</script>
+<body>
+	<div class="container">
+		<h1>タスク編集</h1>
+		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post" th:object="${task}">
+			<div class="form-group">
+				<label class="control-label">タイトル</label> <input
+					class="form-control" type="text"  th:field="*{title}"/>
+			</div>
+			
+			<div class="input-group">
+			  <label class="control-label" for="description">Description</label> 
+			  <textarea class="form-control" name="description" th:field="*{description}" aria-label="With textarea"></textarea>
+			</div>
+
+			<div class="form-group ">
+				<label class="control-label" for="scheduled_date">Schedule
+					Date</label> 
+				<input class="form-control" id="scheduled_date"
+					name="scheduled_date" placeholder="MM/DD/YYYY" type="text" th:field="*{scheduled_date}"/>
+			</div>
+
+			<div class="form-group ">
+				<label class="control-label" for="complete_date">Complete
+					Date</label> 
+				<input class="form-control" id="complete_date"
+					name="complete_date" placeholder="MM/DD/YYYY" type="text" th:field="*{complete_date}"/>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label">Priority</label>
+				<div >
+					<select class="dd-priority" th:field="*{priority}" name="priority">
+						<option value="1">High</option> 
+						<option value="2">Medium</option>
+						<option value="3">Normal</option>
+						<option value="4">Low</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-check">
+					<div th:if="*{complete_flg} == 0">
+						<input class="form-check-input" type="checkbox" id="gridCheck" name = "complete_flg" value="0"/>
+						<label class="form-check-label" for="gridCheck"> Is Complete </label>
+					</div>
+					<div th:unless="*{complete_flg} == 0">
+					<input class="form-check-input" type="checkbox" name = "complete_flg" id="gridCheck" checked="checked" value ="1"/>
+					<label class="form-check-label" for="gridCheck"> Is Complete </label>
+					</div>
+				
+				</div>
+			</div>
+			<button class="btn btn-default" type="submit">更新</button>
+		</form>
+		<div class="pull-right">
+			<a class="btn btn-link" href="/tasks">一覧画面へ</a>
+		</div>
+	</div>
+</body>
+</html>
