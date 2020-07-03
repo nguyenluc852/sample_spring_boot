@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+
+.btn-outline-danger {
+	margin-bottom: 16px; 
+	margin-right: 34px
+}
+
+.checkbox_delete {
+	right: 20px
+}
+
+.form-check {
+    position: relative;
+    display: block;
+    margin-left: 16px;
+}

@@ -32,16 +32,14 @@
 			var container = $('.bootstrap-iso form').length > 0 ? $(
 					'.bootstrap-iso form').parent() : 'body';
 			dateInput.datepicker({
-				format : 'mm/dd/yyyy',
+				format : 'yyyy/mm/dd',
 				container : container,
 				todayHighlight : true,
-				autoclose : true,
-				startDate : truncateDate(new Date())
+				autoclose : true
 			// <-- THIS WORKS
 			});
 
-			$('#scheduled_date').datepicker('setStartDate',
-					truncateDate(new Date())); // <-- SO DOES THIS
+			
 		}
 	);
 	 
@@ -51,7 +49,7 @@
 				var container = $('.bootstrap-iso form').length > 0 ? $(
 						'.bootstrap-iso form').parent() : 'body';
 				dateInput.datepicker({
-					format : 'mm/dd/yyyy',
+					format : 'yyyy/mm/dd',
 					container : container,
 					todayHighlight : true,
 					autoclose : true,
@@ -64,7 +62,7 @@
 			}	
 		); 
 	
- 	$(document).ready(function(){
+ 	/* $(document).ready(function(){
  	    $("#complete_flg").click(function(){
  	        if($(this).is(':checked')){
  	        	$("#complete_flg").val("1"));
@@ -75,7 +73,7 @@
  	       
  	        }
  	    });
- 	});
+ 	}); */
 	
 	function truncateDate(date) {
 		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -93,26 +91,24 @@
 			</div>
 			
 			<div class="input-group">
-			  <label class="control-label" for="description">Description</label> 
-			  <textarea class="form-control" name="description" th:field="*{description}" aria-label="With textarea"></textarea>
+			  <label class="control-label" for="description">タスクの内容</label> 
+			  <textarea class="form-control" name="description" th:field="*{description}" rows="10" aria-label="With textarea"></textarea>
 			</div>
 
 			<div class="form-group ">
-				<label class="control-label" for="scheduled_date">Schedule
-					Date</label> 
+				<label class="control-label" for="scheduled_date">予定日</label> 
 				<input class="form-control" id="scheduled_date"
 					name="scheduled_date" placeholder="MM/DD/YYYY" type="text" th:field="*{scheduled_date}"/>
 			</div>
 
 			<div class="form-group ">
-				<label class="control-label" for="complete_date">Complete
-					Date</label> 
+				<label class="control-label" for="complete_date">完了日</label> 
 				<input class="form-control" id="complete_date"
 					name="complete_date" placeholder="MM/DD/YYYY" type="text" th:field="*{complete_date}"/>
 			</div>
 
 			<div class="form-group">
-				<label class="control-label">Priority</label>
+				<label class="control-label">優先順位</label>
 				<div >
 					<select class="dd-priority" th:field="*{priority}" name="priority">
 						<option value="1">High</option> 
@@ -122,7 +118,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<div class="form-check">
 					<div th:if="*{complete_flg} == 0">
 						<input class="form-check-input" type="checkbox" id="gridCheck" name = "complete_flg" value="0"/>
@@ -134,8 +130,8 @@
 					</div>
 				
 				</div>
-			</div>
-			<button class="btn btn-default" type="submit">更新</button>
+			</div> -->
+			<button class="btn btn-outline-success" type="submit" onclick="return confirm('Do you really want to submit the form?');">更新</button>
 		</form>
 		<div class="pull-right">
 			<a class="btn btn-link" href="/tasks">一覧画面へ</a>

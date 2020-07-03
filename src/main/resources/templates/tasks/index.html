@@ -11,70 +11,148 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/bootstrap.js"></script>
 
+<link rel="stylesheet" href="/css/task_index.css" />
+
 <title>Task Manager</title>
 </head>
 
 <script type="text/javascript">
 	function updateTask(taskId) {
 		// your code that does something with param
-		var r = confirm("Are you sure! Complete task");
-		if (r == true) {
-			$.ajax({
-				type : "POST",
-				url : "/tasks/complete_task/" + taskId,
-				data : {
-					id : taskId
-				},
 
-				success : function(data) {
-					location.reload()
-				
-				}
-			});
-		} else {
-			$("#complete_flg"+taskId).val(0);
-			$("#complete_flg"+taskId).prop('checked', false);
-		}
-		
+		$.ajax({
+			type : "POST",
+			url : "/tasks/complete_task/" + taskId,
+			data : {
+				id : taskId
+			},
+
+			success : function(data) {
+				location.reload();
+				$("#alertSuccess").show(); //or fadeIn
+				setTimeout(function() {
+					$("#alertSuccess").hide(); //or fadeOut
+				}, 5000);
+			}
+		});
 
 	};
+
+	function redirectEdit(id) {
+		window.location.href = "/tasks/" + id + "/edit";
+	}
+
+	function redirectCreate() {
+		window.location.href = "/tasks/new";
+	}
+	var listIDDelete = [];
+	function getListIdDelete(id) {
+
+		if ($("#cb_delete" + id).is(':checked')) {
+			listIDDelete.push(id);
+		} else {
+			//uncheck - clear input
+
+			const index = listIDDelete.indexOf(id);
+			if (index > -1) {
+				listIDDelete.splice(index, 1);
+			}
+		}
+
+		console.log(listIDDelete);
+	}
+
+	function deleteListId() {
+		if (listIDDelete.length > 0) {
+			var r = confirm("Are you sure! Delete task");
+			if (r == true) {
+				$.ajax({
+					type : "post",
+					url : "/tasks/delete/" + listIDDelete,
+					data : {
+						listId : listIDDelete
+					},
+
+					success : function(data) {
+						listIDDelete = [];
+						location.reload()
+
+					}
+				});
+			}
+		}
+
+	}
 </script>
 <body>
-	<div align="center">
-		<h1>Task List</h1>
-		<a href="tasks/new">タスク登録</a> <br /> <br />
-		<div class="container px-lg-5">
-			<div class="row mx-lg-n5">
 
+	<div align="center">
+		<div id="alertSuccess" class="alert alert-success  float-right"
+			style="display: none" role="alert">Change task completed</div>
+		<h1>タスク一覧</h1>
+
+		<button type="button" class="btn btn-outline-primary"
+			onclick="redirectCreate()">タスク登録</button>
+
+		<div class="container px-lg-5">
+
+			<div class="row mx-lg-n5">
+				<div class="col-lg-12" style="margin-bottom: 10px;">
+					<button type="button" class="btn btn-outline-danger float-right"
+						style="width: 100px;" onclick="deleteListId()">削除</button>
+				</div>
+				<p></p>
+				<p></p>
 				<div class="col py-3 px-lg-5 border bg-light">
 					<h2>未完了</h2>
 
-					<div class="list-group">
-						<div class="list-group-item"
-							th:each="task : ${listTasksNotComplete}">
-							<div class="d-flex w-100 justify-content-between">
-								<h5 class="mb-1" th:text="${task.title}">Title</h5>
-								<a th:href="@{/tasks/{id}/edit(id=*{task.id})}"><i
-									class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+					<div th:if="${#lists.isEmpty(listTasksUnComplete)}">
+						<div>未完了タスクがありません</div>
+					</div>
+					<div th:unless="${#lists.isEmpty(listTasksUnComplete)}">
+						<div class="list-group">
 
-							</div>
-							<div align="left">
-								<p class="mb-1" th:text="${task.description}">Description</p>
+							<div class="list-group-item"
+								th:each="task : ${listTasksUnComplete}">
+								<div align="right" class="d-flex w-100 justify-content-between">
+									<div class="col" align="left"
+										th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
+										<h5 class="mb-1 text-left" th:text="${task.title}">Title</h5>
+										<!-- <a th:href="@{/tasks/{id}/edit(id=*{task.id})}"><i
+										class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+										
+										<p>
+											<small th:text="'予定日: ' + ${task.scheduled_date}">Schedule
+												date</small>
+										</p>
 
-								<p>
-									<small th:text="'Schedule Date: ' + ${task.scheduled_date}">Schedule
-										date</small>
-								</p>
-								<small th:text="'Complete Date: ' + ${task.complete_date}">Schedule
-									date</small>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox"
-										th:data-id="${task.id}" th:name="'complete_flg'+ ${task.id}"
-										th:id="'complete_flg'+ ${task.id}"
-										th:onclick="'updateTask(\'' +${task.id} +'\')'">
-									<label class="form-check-label" for="complete_flg"> Is
-										Complete </label>
+										<p>
+											<small th:text="'完了日: ' + ${task.complete_date}">Schedule
+												date</small>
+										</p>
+
+										<p th:switch="${task.priority}">
+											<small th:case="1">優先順位: High</small> <small th:case="2">優先順位:
+												Medium</small> <small th:case="3">優先順位: Normal</small> <small
+												th:case="4">優先順位: Low</small>
+										</p>
+									</div>
+									<input class="checkbox_delete" type="checkbox"
+										th:data-id="${task.id}" th:name="'cb_delete'+ ${task.id}"
+										th:id="'cb_delete'+ ${task.id}"
+										th:onclick="'getListIdDelete(\'' +${task.id} +'\')'">
 								</div>
+
+								<div class="form-check" align="left" th:onclick="'updateTask(\'' +${task.id} +'\')'">
+									<p>
+										<input class="form-check-input" type="checkbox"
+											th:data-id="${task.id}" th:name="'complete_flg'+ ${task.id}"
+											th:id="'complete_flg'+ ${task.id}"
+											 /> <label
+											class="form-check-label" for="complete_flg">完了</label>
+									</p>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -83,24 +161,41 @@
 
 				<div class="col py-3 px-lg-5 border bg-light">
 					<h2>完了</h2>
+					<div th:if="${#lists.isEmpty(listTasksComplete)}">
+						<div>完了タスクがありません</div>
+					</div>
+					<div th:unless="${#lists.isEmpty(listTasksComplete)}">
+						<div class="list-group">
+							<div class="list-group-item"
+								th:each="task : ${listTasksComplete}">
+								<div class="d-flex w-100 justify-content-between">
 
-					<div class="list-group">
-						<div class="list-group-item" th:each="task : ${listTasksComplete}">
-							<div class="d-flex w-100 justify-content-between">
-								<h5 class="mb-1" th:text="${task.title}">Title</h5>
-								<a th:href="@{/tasks/{id}/edit(id=*{task.id})}"><i
-									class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+									<div class="mb-1" align="left"
+										th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
+										<h5 class=" text-left" th:text="${task.title}">Title</h5>
+										
+										<p>
+											<small th:text="'予定日: ' + ${task.scheduled_date}">Schedule
+												date</small>
+										</p>
+										<small th:text="'完了日: ' + ${task.complete_date}">Schedule
+											date</small>
+										<p th:switch="${task.priority}">
+											<small th:case="1">優先順位: High</small> <small th:case="2">優先順位:
+												Medium</small> <small th:case="3">優先順位: Normal</small> <small
+												th:case="4">優先順位: Low</small>
+										</p>
+									</div>
 
-							</div>
-							<div align="left">
-								<p class="mb-1" th:text="${task.description}">Description</p>
 
-								<p>
-									<small th:text="'Schedule Date: ' + ${task.scheduled_date}">Schedule
-										date</small>
-								</p>
-								<small th:text="'Complete Date: ' + ${task.complete_date}">Schedule
-									date</small>
+
+									<input class="checkbox_delete" type="checkbox"
+										th:data-id="${task.id}" th:name="'cb_delete'+ ${task.id}"
+										th:id="'cb_delete'+ ${task.id}"
+										th:onclick="'getListIdDelete(\'' +${task.id} +'\')'">
+
+								</div>
+
 							</div>
 						</div>
 					</div>
