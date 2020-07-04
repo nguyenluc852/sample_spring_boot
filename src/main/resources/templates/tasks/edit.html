@@ -11,7 +11,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"
 	rel="stylesheet" />
@@ -59,30 +60,36 @@
 						truncateDate(new Date())); // <-- SO DOES THIS
 			});
 
-	function validateRegistration() {
-		var r = confirm("Do you really want to summit infomation");
-		if (r == true) {
-			var str = [];
-			if ($('#title').val() == "") {
-				str.push("You must enter title");
+	$(document).ready(function() {
+
+		$('#task-form').validate({
+			rules : {
+				title : 'required',
+				description : 'required',
+				scheduled_date : {
+					required : true
+				},
+				complete_date : {
+					required : true
+				}
+			},
+			messages : {
+				title : 'This field is required',
+				description : 'This field is required',
+				scheduled_date : 'This field is required',
+				complete_date : 'This field is required'
+			},
+		
+			submitHandler : function(form) {
+				console.log("summit")
+				var r = confirm("Do you really want to summit infomation");
+				if (r == true) {
+					form.submit();
+				}
 			}
-			if ($('#description').val() == "") {
-				str.push("You must enter description");
-			}
-			if ($('#scheduled_date').value == "") {
-				str.push("You must enter scheduled_date");
-			}
-			if ($('#complete_date').value == "") {
-				str.push("You must enter complete_date");
-			}
-			if (str.length > 0) {
-				alert(str.join('\n'));
-				return false;
-			} else {
-				return true;
-			}
-		}
-	};
+		});
+
+	});
 
 	/* $(document).ready(function(){
 	    $("#complete_flg").click(function(){
@@ -101,13 +108,13 @@
 		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 	};
 
-	$('#dd-priority').select2()
+	/* $('#dd-priority').select2() */
 </script>
 <body>
 	<div class="container">
 		<h1>タスク変更・閲覧</h1>
-		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post"
-			th:object="${task}" th:onSubmit="return validateRegistration()">
+		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post" id="task-form" name="task-form"
+			th:object="${task}">
 			<div class="form-group">
 				<label class="control-label">タイトル</label> <input
 					class="form-control" type="text" th:field="*{title}" />

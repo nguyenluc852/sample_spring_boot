@@ -10,6 +10,8 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
 <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 
 <link
@@ -68,95 +70,100 @@
 		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 	};
 
-	function validateRegistration() {
-		var r = confirm("Do you really want to summit infomation");
-		if (r == true) {
-			var str = [];
-			if ($('#title').val() == "") {
-				str.push("You must enter title");
-			}
-			if ($('#description').val() == "") {
-				str.push("You must enter description");
-			}
-			console.log($('#scheduled_date').value);
-			if ($('#scheduled_date').value == "") {
-				str.push("You must enter scheduled_date");
-				console.log($('#scheduled_date').value);
-			}
-			console.log($('#complete_date').value);
-			if ($('#complete_date').value == "") {
-				console.log($('#complete_date').value);
-				str.push("You must enter complete_date");
-			}
-			if (str.length > 0) {
-				alert(str.join('\n'));
-				return false;
-			} else {
-				return true;
-			}
-		}
-	};
 
-	$('#dd-priority').select2()
+	$(document).ready(function() {
+
+		$('#task-form').validate({
+			rules : {
+				title : 'required',
+				description : 'required',
+				scheduled_date : {
+					required : true
+				},
+				complete_date : {
+					required : true
+				}
+			},
+			messages : {
+				title : 'This field is required',
+				description : 'This field is required',
+				scheduled_date : 'This field is required',
+				complete_date : 'This field is required'
+			},
+			
+			submitHandler : function(form) {
+				console.log("summit")
+				var r = confirm("Do you really want to summit infomation");
+				if (r == true) {
+					form.submit();
+				}
+			}
+		});
+
+	});
 </script>
 <body>
 	<div class="container">
 		<h1>タスク登録</h1>
-		<form th:action="@{/tasks}" id="task-form" th:method="post"
-			th:onSubmit="return validateRegistration()">
+		<form th:action="@{/tasks}" id="task-form" name="task-form"
+			th:method="post">
 			<fieldset>
-			<div class="form-group">
-				<label class="control-label">タイトル</label> <input
-					class="form-control" type="text" name="title" id="title" />
-				<!-- <label
+				<div class="form-group">
+					<label class="control-label">タイトル</label> <input
+						class="form-control" type="text" name="title" id="title" />
+					<!-- <label
 						th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Generic
 						Error</label> -->
-			</div>
-
-			<div class="input-group">
-				<label class="control-label" for="description">タスクの内容</label>
-				<textarea class="form-control" name="description" id="description"
-					rows="10" aria-label="With textarea"></textarea>
-				<!-- <label th:if="${#fields.hasErrors('description')}"
-						th:errors="*{description}">Generic Error</label> -->
-			</div>
-
-			<div class="form-group ">
-				<label class="control-label" for="scheduled_date">予定日</label> <input
-					class="form-control" id="scheduled_date" name="scheduled_date"
-					placeholder="MM/DD/YYYY" type="text" />
-				<!-- <label
-						th:if="${#fields.hasErrors('scheduledate')}"
-						th:errors="*{scheduledate}">Generic Error</label> -->
-			</div>
-
-			<div class="form-group ">
-				<label class="control-label" for="complete_date">完了日</label> <input
-					class="form-control" id="complete_date" name="complete_date"
-					placeholder="MM/DD/YYYY" type="text" />
-				<!-- <label
-						th:if="${#fields.hasErrors('scheduledate')}"
-						th:errors="*{scheduledate}">Generic Error</label> -->
-			</div>
-
-			<div class="form-group">
-				<label class="control-label">優先順位</label>
-				<div>
-					<select class="dd-priority" name="priority">
-						<option value="1">High</option>
-						<option value="2">Medium</option>
-						<option value="3">Normal</option>
-						<option value="4">Low</option>
-					</select>
 				</div>
-			</div>
-			<div class="pull-right form-row">
-			<button class="btn btn-outline-success" type="submit">登録</button>
-			<button class="btn btn-outline-success"　type="button"　onclick="window.location.href='/tasks'">戻る</button>
-			</div>
+
+				<div class="form-group">
+					<label class="control-label" for="description">タスクの内容</label>
+					<textarea class="form-control" name="description" id="description"
+						rows="10" aria-label="With textarea"></textarea>
+					<!-- <label th:if="${#fields.hasErrors('description')}"
+						th:errors="*{description}">Generic Error</label> -->
+				</div>
+
+				<div class="form-group">
+					<p>
+						<label class="control-label" for="scheduled_date">予定日</label> <input
+							class="form-control" id="scheduled_date" name="scheduled_date"
+							placeholder="MM/DD/YYYY" type="text" />
+						<!-- <label
+						th:if="${#fields.hasErrors('scheduledate')}"
+						th:errors="*{scheduledate}">Generic Error</label> -->
+				</div>
+
+				<div class="form-group ">
+					<label class="control-label" for="complete_date">完了日</label> <input
+						class="form-control" id="complete_date" name="complete_date"
+						placeholder="MM/DD/YYYY" type="text" />
+					<!-- <label
+						th:if="${#fields.hasErrors('scheduledate')}"
+						th:errors="*{scheduledate}">Generic Error</label> -->
+				</div>
+
+				<div class="form-group">
+					<label class="control-label">優先順位</label>
+					<div>
+						<select class="dd-priority" name="priority">
+							<option value="1">High</option>
+							<option value="2">Medium</option>
+							<option value="3">Normal</option>
+							<option value="4">Low</option>
+						</select>
+					</div>
+				</div>
 			</fieldset>
+			<div class="row">
+				<button class="btn btn-outline-success" type="submit"
+					style="margin-left: 15px;">登録</button>
+				<button type="button" class="btn btn-outline-success"
+					style="margin-left: 15px;" onclick="window.location.href='/tasks'">戻る</button>
+			</div>
+
 		</form>
-		
+
 	</div>
 </body>
 </html>
