@@ -94,110 +94,98 @@
 		<button type="button" class="btn btn-outline-primary"
 			onclick="redirectCreate()">タスク登録</button>
 
-		<div class="container px-lg-5">
+		<div class="container px-lg-6">
 
-			<div class="row mx-lg-n5">
+			<div class="row mx-lg-n6" style="margin-left: -80px;margin-right: -80px;">
 				<div class="col-lg-12" style="margin-bottom: 10px;">
 					<button type="button" class="btn btn-outline-danger float-right"
 						style="width: 100px;" onclick="deleteListId()">削除</button>
 				</div>
 				<p></p>
 				<p></p>
-				<div class="col py-3 px-lg-5 border bg-light">
+				<div class="col py-3 px-lg-6 border bg-light">
 					<h2>未完了</h2>
 
 					<div th:if="${#lists.isEmpty(listTasksUnComplete)}">
 						<div>未完了タスクがありません</div>
 					</div>
-					<div th:unless="${#lists.isEmpty(listTasksUnComplete)}">
-						<div class="list-group">
-
-							<div class="list-group-item"
-								th:each="task : ${listTasksUnComplete}">
-								<div align="right" class="d-flex w-100 justify-content-between">
-									<div class="col" align="left"
-										th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
-										<h5 class="mb-1 text-left" th:text="${task.title}">Title</h5>
-										<!-- <a th:href="@{/tasks/{id}/edit(id=*{task.id})}"><i
-										class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
-										
-										<p>
-											<small th:text="'予定日: ' + ${task.scheduled_date}">Schedule
-												date</small>
-										</p>
-
-										<p>
-											<small th:text="'完了日: ' + ${task.complete_date}">Schedule
-												date</small>
-										</p>
-
-										<p th:switch="${task.priority}">
-											<small th:case="1">優先順位: High</small> <small th:case="2">優先順位:
-												Medium</small> <small th:case="3">優先順位: Normal</small> <small
-												th:case="4">優先順位: Low</small>
-										</p>
-									</div>
-									<input class="checkbox_delete" type="checkbox"
+					<div th:unless="${#lists.isEmpty(listTasksUnComplete)}" class="table-responsive-md">
+					<div></div>
+						<table class="table table-hover table-bordered tableBodyScroll" >
+				        <thead>
+				            <tr>
+				                <th>タイトル</th>
+				                <th style="width: 110px;">予定日</th>
+				                <th style="width: 110px;">完了日</th>
+				                <th style="width: 90px;">優先順位</th>
+				                <th style="width: 60px;">完了</th>
+				                <th style="width: 60px;">削除</th>
+				            </tr>
+				        </thead>
+				        
+				        <tbody>
+				            <tr th:each="task : ${listTasksUnComplete}">
+				                <td th:text=${task.title} th:onclick="'redirectEdit(\'' +${task.id} +'\')'">Title</td>
+				                <td th:text="${task.scheduled_date}" style="width: 110px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">予定日</td>
+				                <td th:text="${task.complete_date}" style="width: 110px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">完了日</td>
+				                <td th:switch="${task.priority}" style="width: 90px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
+									<small th:case="1">High</small> <small th:case="2">Medium</small> <small th:case="3">Normal</small> <small
+										th:case="4">Low</small>
+								</td>
+								<td style="width: 60px;" th:onclick="'updateTask(\'' +${task.id} +'\')'">
+									<input   type="checkbox"
+											th:data-id="${task.id}" th:name="'complete_flg'+ ${task.id}"
+											th:id="'complete_flg'+ ${task.id}"  
+											 /> 
+								</td>
+				                <td style="width: 60px;" th:onclick="'getListIdDelete(\'' +${task.id} +'\')'"><input class="checkbox_delete" type="checkbox"
 										th:data-id="${task.id}" th:name="'cb_delete'+ ${task.id}"
 										th:id="'cb_delete'+ ${task.id}"
-										th:onclick="'getListIdDelete(\'' +${task.id} +'\')'">
-								</div>
-
-								<div class="form-check" align="left" th:onclick="'updateTask(\'' +${task.id} +'\')'">
-									<p>
-										<input class="form-check-input" type="checkbox"
-											th:data-id="${task.id}" th:name="'complete_flg'+ ${task.id}"
-											th:id="'complete_flg'+ ${task.id}"
-											 /> <label
-											class="form-check-label" for="complete_flg">完了</label>
-									</p>
-								</div>
-
-							</div>
-						</div>
+										></td>	               
+				            </tr>
+				        </tbody>
+				        </table> 
+				
 					</div>
 				</div>
 
 
-				<div class="col py-3 px-lg-5 border bg-light">
+				<div class="col py-3 px-lg-6 border bg-light">
 					<h2>完了</h2>
 					<div th:if="${#lists.isEmpty(listTasksComplete)}">
 						<div>完了タスクがありません</div>
 					</div>
-					<div th:unless="${#lists.isEmpty(listTasksComplete)}">
-						<div class="list-group">
-							<div class="list-group-item"
-								th:each="task : ${listTasksComplete}">
-								<div class="d-flex w-100 justify-content-between">
-
-									<div class="mb-1" align="left"
-										th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
-										<h5 class=" text-left" th:text="${task.title}">Title</h5>
-										
-										<p>
-											<small th:text="'予定日: ' + ${task.scheduled_date}">Schedule
-												date</small>
-										</p>
-										<small th:text="'完了日: ' + ${task.complete_date}">Schedule
-											date</small>
-										<p th:switch="${task.priority}">
-											<small th:case="1">優先順位: High</small> <small th:case="2">優先順位:
-												Medium</small> <small th:case="3">優先順位: Normal</small> <small
-												th:case="4">優先順位: Low</small>
-										</p>
-									</div>
-
-
-
-									<input class="checkbox_delete" type="checkbox"
+					<div th:unless="${#lists.isEmpty(listTasksComplete)}" class="table-responsive-md">
+					
+						<table class="table table-hover table-bordered tableBodyScroll" >
+				        <thead>
+				            <tr>
+				                <th>タイトル</th>
+				                <th style="width: 110px;">予定日</th>
+				                <th style="width: 110px;">完了日</th>
+				                <th style="width: 90px;">優先順位</th>
+				               
+				                <th style="width: 60px;">削除</th>
+				            </tr>
+				        </thead>
+				        
+				        <tbody>
+				            <tr th:each="task : ${listTasksComplete}">
+				                <td th:text=${task.title}>Title</td>
+				                <td th:text="${task.scheduled_date}" style="width: 110px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">予定日</td>
+				                <td th:text="${task.complete_date}" style="width: 110px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">完了日</td>
+				                <td th:switch="${task.priority}" style="width: 90px;" th:onclick="'redirectEdit(\'' +${task.id} +'\')'">
+									<small th:case="1">High</small> <small th:case="2">Medium</small> <small th:case="3">Normal</small> <small
+										th:case="4">Low</small>
+								</td>
+				                <td style="width: 60px;" th:onclick="'getListIdDelete(\'' +${task.id} +'\')'"><input class="checkbox_delete" type="checkbox"
 										th:data-id="${task.id}" th:name="'cb_delete'+ ${task.id}"
 										th:id="'cb_delete'+ ${task.id}"
-										th:onclick="'getListIdDelete(\'' +${task.id} +'\')'">
-
-								</div>
-
-							</div>
-						</div>
+										></td>	               
+				            </tr>
+				        </tbody>
+				        </table>
+						
 					</div>
 				</div>
 			</div>

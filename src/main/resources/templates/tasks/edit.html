@@ -105,7 +105,7 @@
 </script>
 <body>
 	<div class="container">
-		<h1>タスク編集</h1>
+		<h1>タスク変更・閲覧</h1>
 		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post"
 			th:object="${task}" th:onSubmit="return validateRegistration()">
 			<div class="form-group">
@@ -155,11 +155,14 @@
 				
 				</div>
 			</div> -->
-			<button class="btn btn-outline-success" type="submit">更新</button>
+			<div class="pull-right form-row">
+				<button class="btn btn-outline-success" type="submit">変更</button>
+				<button class="btn btn-outline-success"
+					onclick="window.location.href='/tasks'" type="button">戻る</button>
+			</div>
+
 		</form>
-		<div class="pull-right">
-			<a class="btn btn-link" href="/tasks">一覧画面へ</a>
-		</div>
+
 	</div>
 </body>
 </html>
