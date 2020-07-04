@@ -4,15 +4,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Task {
 	int id;
+	
+	@NotNull
+	@Size(min=2, max= 255)
+	@NotEmpty
 	String title;
+	@NotNull
+	@Size(min=2, max= 10000)
+	@NotEmpty
 	String description;
+	@NotNull
+	@NotEmpty
 	String scheduled_date;
+	@NotNull
+	@NotEmpty
 	String complete_date;
 	int complete_flg;
+	@NotNull
 	int priority;
 	int delete_flg;
 	String created_at;

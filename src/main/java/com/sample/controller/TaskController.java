@@ -2,24 +2,25 @@ package com.sample.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.comparator.Comparators;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import com.sample.model.Task;
+import com.sample.model.TaskValidator;
 import com.sample.service.TaskService;
 
 
@@ -29,7 +30,16 @@ public class TaskController {
 
 	@Autowired
 	private TaskService service;
+	
+//	@Autowired
+//	TaskValidator taskFormValidator;
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+//	@InitBinder()
+//	protected void initPersonFormBinder(WebDataBinder binder) {
+//	binder.setValidator(taskFormValidator);
+//	}
 	
 	@GetMapping
 	public String index(Model model) {
