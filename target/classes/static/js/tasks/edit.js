@@ -23,13 +23,10 @@ $(document).ready(
 				format : 'yyyy/mm/dd',
 				container : container,
 				todayHighlight : true,
-				autoclose : true,
-				startDate : truncateDate(new Date())
-			// <-- THIS WORKS
+				autoclose : true
 			});
 
-			$('#complete_date').datepicker('setStartDate',
-					truncateDate(new Date())); // <-- SO DOES THIS
+			
 		});
 
 $(document).ready(function() {
