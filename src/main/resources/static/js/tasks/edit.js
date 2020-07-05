@@ -54,7 +54,7 @@ $(document).ready(function() {
 	
 		submitHandler : function(form) {
 			console.log("summit")
-			var r = confirm("Do you really want to summit infomation");
+			var r = confirm("タスクを変更します。本当によろしいですか？");
 			if (r == true) {
 				form.submit();
 			}
