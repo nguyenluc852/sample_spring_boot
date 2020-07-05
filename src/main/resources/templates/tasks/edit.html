@@ -31,8 +31,8 @@
 <body>
 	<div class="container">
 		<h1>タスク変更・閲覧</h1>
-		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post" id="task-form" name="task-form"
-			th:object="${task}">
+		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post"
+			id="task-form" name="task-form" th:object="${task}">
 			<div class="form-group">
 				<label class="control-label">タイトル</label> <input
 					class="form-control" type="text" th:field="*{title}" />
@@ -45,15 +45,19 @@
 			</div>
 
 			<div class="form-group ">
-				<label class="control-label" for="scheduled_date">予定日</label> <input
-					class="form-control" id="scheduled_date" name="scheduled_date" autocomplete="off"
-					placeholder="YYYY/MM/DD" type="text" th:field="*{scheduled_date}" />
+				<p>
+					<label class="control-label" for="scheduled_date">予定日</label> <input
+						class="form-control" id="scheduled_date" name="scheduled_date"
+						autocomplete="off" placeholder="YYYY/MM/DD" type="text"
+						th:field="*{scheduled_date}" />
+				</p>
 			</div>
 
 			<div class="form-group ">
 				<label class="control-label" for="complete_date">完了日</label> <input
-					class="form-control" id="complete_date" name="complete_date" autocomplete="off"
-					placeholder="YYYY/MM/DD" type="text" th:field="*{complete_date}" />
+					class="form-control" id="complete_date" name="complete_date"
+					autocomplete="off" placeholder="YYYY/MM/DD" type="text"
+					th:field="*{complete_date}" />
 			</div>
 
 			<div class="form-group">
@@ -67,19 +71,7 @@
 					</select>
 				</div>
 			</div>
-			<!-- <div class="form-group">
-				<div class="form-check">
-					<div th:if="*{complete_flg} == 0">
-						<input class="form-check-input" type="checkbox" id="gridCheck" name = "complete_flg" value="0"/>
-						<label class="form-check-label" for="gridCheck"> Is Complete </label>
-					</div>
-					<div th:unless="*{complete_flg} == 0">
-					<input class="form-check-input" type="checkbox" name = "complete_flg" id="gridCheck" checked="checked" value ="1"/>
-					<label class="form-check-label" for="gridCheck"> Is Complete </label>
-					</div>
-				
-				</div>
-			</div> -->
+
 			<div class="pull-right form-row">
 				<button class="btn btn-outline-success" type="submit">変更</button>
 				<button class="btn btn-outline-success"

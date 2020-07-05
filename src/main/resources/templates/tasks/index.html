@@ -18,38 +18,40 @@
 </head>
 
 <body>
-
-	<div align="center">
+	<div class="col">
 		<div id="alertSuccess" class="alert alert-success  float-right"
 			style="display: none" role="alert">Change task completed</div>
-		<h1>タスク一覧</h1>
+		<div align="center" id="form-index">
 
-		<button type="button" class="btn btn-outline-primary"
-			onclick="redirectCreate()">タスク登録</button>
+			<h1>タスク一覧</h1>
 
-		<div class="container px-lg-6">
+			<button type="button" class="btn btn-outline-primary"
+				onclick="redirectCreate()">タスク登録</button>
 
-			<div class="row mx-lg-n6"
-				style="margin-left: -80px; margin-right: -80px;">
-				<div class="col-lg-12" style="margin-bottom: 10px;">
-					<button type="button" class="btn btn-outline-danger float-right"
-						style="width: 100px;" onclick="deleteListId()">削除</button>
+			<div class="container px-lg-6">
+
+				<div class="row mx-lg-n6"
+					style="margin-left: -80px; margin-right: -80px;">
+					<div class="col-lg-12" style="margin-bottom: 10px;">
+						<button type="button" class="btn btn-outline-danger float-right"
+							style="width: 100px;" onclick="deleteListId()">削除</button>
+					</div>
+					<p></p>
+					<p></p>
+					<div class="col py-3 px-lg-6 border bg-light">
+						<h2>未完了</h2>
+						<div th:block
+							th:replace="~{tasks/table_uncomplete:: list-uncomplete(${listTasksUnComplete}) }"
+							id="view-table-uncomplete" class="view-table-uncomplete"></div>
+					</div>
+
+					<div class="col py-3 px-lg-6 border bg-light">
+						<h2>完了</h2>
+						<div th:block
+							th:replace="~{tasks/table_complete:: list-complete(${listTasksComplete}) }"></div>
+					</div>
+
 				</div>
-				<p></p>
-				<p></p>
-				<div class="col py-3 px-lg-6 border bg-light">
-					<h2>未完了</h2>
-					<div th:block
-						th:replace="~{tasks/table_uncomplete:: list-uncomplete(${listTasksUnComplete}) }" 
-						id="view-table-uncomplete" class = "view-table-uncomplete" ></div>
-				</div>
-
-				<div class="col py-3 px-lg-6 border bg-light">
-					<h2>完了</h2>
-					<div th:block
-						th:replace="~{tasks/table_complete:: list-complete(${listTasksComplete}) }"></div>
-				</div>
-
 			</div>
 		</div>
 	</div>
