@@ -60,38 +60,9 @@ public class TaskController {
 				}
 	    	}
 		}
-	   
-		Collections.sort(listComplete, new Comparator<Task>() {
-            @Override
-            public int compare(Task task, Task task2) {
-                return task2.getComplete_date().compareTo(task.getComplete_date());
-            }
-        });
-		
-		Collections.sort(listUnComplete, new Comparator<Task>() {
-            @Override
-            public int compare(Task task, Task task2) {
-            	Date currentDate = new Date();
-            	Date date1 = null;
-            	Date date2 = null;
-            	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-				try {
-					date1 = sdf.parse(task.getScheduled_date());
-					date2 = sdf.parse(task2.getScheduled_date());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            	if ((date1.getTime() - currentDate.getTime()) > (date2.getTime() - currentDate.getTime())) {
-            		return 1;
-            	} else  if ((date1.getTime() - currentDate.getTime()) < (date2.getTime() - currentDate.getTime())) {
-            		return -1;
-            	} else {
-            		return 0;
-            	}
-                
-            }
-        });
+	  
+		sortListCompleted(listComplete);
+		sortListUncomplete(listUnComplete);
 	
 	    model.addAttribute("listTasksComplete", listComplete);
 	    model.addAttribute("listTasksUnComplete", listUnComplete); 
@@ -157,7 +128,7 @@ public class TaskController {
         
         listUnComplete = new ArrayList<>();
     	listUnComplete = service.getListUncomplete();
-        
+        sortListUncomplete(listUnComplete);
         
         ModelAndView mv= new ModelAndView("tasks/table_uncomplete::list-uncomplete"); 
         mv.addObject("listTasksUnComplete",listUnComplete);
@@ -169,12 +140,7 @@ public class TaskController {
     public ModelAndView getCompletedTask() {
     	listComplete = new ArrayList<>();
     	listComplete = service.getListcompleted();
-    	Collections.sort(listComplete, new Comparator<Task>() {
-            @Override
-            public int compare(Task task, Task task2) {
-                return task2.getComplete_date().compareTo(task.getComplete_date());
-            }
-        });
+    	sortListCompleted(listComplete);
         System.out.printf(listUnComplete.size() +"");
     	ModelAndView mv= new ModelAndView("tasks/table_complete::list-complete"); 
         mv.addObject("listTasksComplete",listComplete);
@@ -195,4 +161,41 @@ public class TaskController {
         
         return "redirect:/tasks";
     }
+    
+    public void sortListUncomplete (List<Task> list) {
+    	Collections.sort(list, new Comparator<Task>() {
+            @Override
+            public int compare(Task task, Task task2) {
+            	Date currentDate = new Date();
+            	Date date1 = null;
+            	Date date2 = null;
+            	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				try {
+					date1 = sdf.parse(task.getScheduled_date());
+					date2 = sdf.parse(task2.getScheduled_date());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	if ((date1.getTime() - currentDate.getTime()) > (date2.getTime() - currentDate.getTime())) {
+            		return 1;
+            	} else  if ((date1.getTime() - currentDate.getTime()) < (date2.getTime() - currentDate.getTime())) {
+            		return -1;
+            	} else {
+            		return 0;
+            	}
+                
+            }
+        });
+    }
+    
+    public void sortListCompleted(List<Task> list) {
+    	Collections.sort(list, new Comparator<Task>() {
+            @Override
+            public int compare(Task task, Task task2) {
+                return task2.getComplete_date().compareTo(task.getComplete_date());
+            }
+        });
+    }
+    
 }
