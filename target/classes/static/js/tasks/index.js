@@ -62,7 +62,7 @@ function updateTask(taskId) {
 
 	function deleteListId() {
 		if (listIDDelete.length > 0) {
-			var r = confirm("Are you sure! Delete task");
+			var r = confirm("タスクを削除します。本当によろしいですか？");
 			if (r == true) {
 				$.ajax({
 					type : "post",

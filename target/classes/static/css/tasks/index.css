@@ -51,3 +51,11 @@ table.tableBodyScroll thead, table.tableBodyScroll tbody tr {
 .error {
 	color: red !important;
 }
+#alertSuccess {
+	margin-right: 60px;
+	margin-top: 10px;
+}
+
+#form-index {
+	margin-top: 50px;
+}
