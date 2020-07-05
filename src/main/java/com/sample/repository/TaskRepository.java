@@ -10,10 +10,10 @@ import com.sample.model.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 	
-	@Query(value = "SELECT * FROM task AS t WHERE t.complete_flg = 0", nativeQuery = true) 
+	@Query(value = "SELECT * FROM task AS t WHERE t.complete_flg = 0 and t.delete_flg=0", nativeQuery = true) 
     public List<Task> findListUnComplete();
 	
 	
-	@Query(value = "SELECT * FROM task AS t WHERE t.complete_flg = 1", nativeQuery = true) 
+	@Query(value = "SELECT * FROM task AS t WHERE t.complete_flg = 1 and t.delete_flg=0", nativeQuery = true) 
     public List<Task> findListCompleted();
 }
