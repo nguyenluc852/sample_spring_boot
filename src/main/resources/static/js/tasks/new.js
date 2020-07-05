@@ -56,10 +56,10 @@
 				}
 			},
 			messages : {
-				title : 'This field is required',
-				description : 'This field is required',
-				scheduled_date : 'This field is required',
-				complete_date : 'This field is required'
+				title : '必須項目です。',
+				description : '必須項目です。',
+				scheduled_date : '必須項目です。',
+				complete_date : '必須項目です。'
 			},
 			
 			submitHandler : function(form) {
