@@ -34,9 +34,9 @@
 						<td th:text="${task.complete_date}" style="width: 110px;"
 							th:onclick="'redirectEdit(\'' +${task.id} +'\')'">完了日</td>
 						<td th:switch="${task.priority}" style="width: 90px;"
-							th:onclick="'redirectEdit(\'' +${task.id} +'\')'"><small
-							th:case="1">High</small> <small th:case="2">Medium</small> <small
-							th:case="3">Normal</small> <small th:case="4">Low</small></td>
+							th:onclick="'redirectEdit(\'' +${task.id} +'\')'"><label
+							th:case="1">High</label> <label th:case="2">Medium</label> <label
+							th:case="3">Normal</label> <label th:case="4">Low</label></td>
 						<td style="width: 60px;"
 							th:onclick="'getListIdDelete(\'' +${task.id} +'\')'"><input
 							class="checkbox_delete" type="checkbox" th:data-id="${task.id}"
