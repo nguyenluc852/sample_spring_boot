@@ -24,92 +24,10 @@
 	rel="stylesheet" />
 
 <link rel="stylesheet" href="/css/app.css" />
+<script src="/js/tasks/edit.js"></script>
 </head>
 
-<script type="text/javascript">
-	$(document).ready(
-			function() {
-				var dateInput = $('input[name="scheduled_date"]'); // Our date input has the name "date"
-				var container = $('.bootstrap-iso form').length > 0 ? $(
-						'.bootstrap-iso form').parent() : 'body';
-				dateInput.datepicker({
-					format : 'yyyy/mm/dd',
-					container : container,
-					todayHighlight : true,
-					autoclose : true
-				// <-- THIS WORKS
-				});
 
-			});
-
-	$(document).ready(
-			function() {
-				var dateInput = $('input[name="complete_date"]'); // Our date input has the name "date"
-				var container = $('.bootstrap-iso form').length > 0 ? $(
-						'.bootstrap-iso form').parent() : 'body';
-				dateInput.datepicker({
-					format : 'yyyy/mm/dd',
-					container : container,
-					todayHighlight : true,
-					autoclose : true,
-					startDate : truncateDate(new Date())
-				// <-- THIS WORKS
-				});
-
-				$('#complete_date').datepicker('setStartDate',
-						truncateDate(new Date())); // <-- SO DOES THIS
-			});
-
-	$(document).ready(function() {
-
-		$('#task-form').validate({
-			rules : {
-				title : 'required',
-				description : 'required',
-				scheduled_date : {
-					required : true
-				},
-				complete_date : {
-					required : true
-				}
-			},
-			messages : {
-				title : 'This field is required',
-				description : 'This field is required',
-				scheduled_date : 'This field is required',
-				complete_date : 'This field is required'
-			},
-		
-			submitHandler : function(form) {
-				console.log("summit")
-				var r = confirm("Do you really want to summit infomation");
-				if (r == true) {
-					form.submit();
-				}
-			}
-		});
-
-	});
-
-	/* $(document).ready(function(){
-	    $("#complete_flg").click(function(){
-	        if($(this).is(':checked')){
-	        	$("#complete_flg").val("1"));
-	        
-	        }else{
-	//uncheck - clear input
-	        $("#complete_flg").val("0");
-	       
-	        }
-	    });
-	}); */
-
-	function truncateDate(date) {
-		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-	};
-
-	/* $('#dd-priority').select2() */
-</script>
 <body>
 	<div class="container">
 		<h1>タスク変更・閲覧</h1>

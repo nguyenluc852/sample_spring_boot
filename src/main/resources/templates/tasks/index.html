@@ -39,29 +39,16 @@
 				<p></p>
 				<div class="col py-3 px-lg-6 border bg-light">
 					<h2>未完了</h2>
+					<div th:block
+						th:replace="~{tasks/table_uncomplete:: list-uncomplete(${listTasksUnComplete}) }" 
+						id="view-table-uncomplete" class = "view-table-uncomplete" ></div>
 
-					<div th:if="${#lists.isEmpty(listTasksUnComplete)}">
-						<div>未完了タスクがありません</div>
-					</div>
-					<div th:unless="${#lists.isEmpty(listTasksUnComplete)}"
-						class="table-responsive-md">
-						<table
-							th:replace="~{tasks/table_uncomplete:: list-uncomplete(${listTasksUnComplete}) }">
-						</table>
-					</div>
 				</div>
 
 				<div class="col py-3 px-lg-6 border bg-light">
 					<h2>完了</h2>
-					<div th:if="${#lists.isEmpty(listTasksComplete)}">
-						<div>完了タスクがありません</div>
-					</div>
-					<div th:unless="${#lists.isEmpty(listTasksComplete)}"
-						class="table-responsive-md">
-						<table
-							th:replace="~{tasks/table_complete:: list-complete(${listTasksComplete}) }">
-						</table>
-					</div>
+					<div th:block
+						th:replace="~{tasks/table_complete:: list-complete(${listTasksComplete}) }"></div>
 				</div>
 
 			</div>

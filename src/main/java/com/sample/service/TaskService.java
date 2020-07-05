@@ -32,4 +32,12 @@ public class TaskService {
 	public void delete(Integer id) {
 		repo.deleteById(id);;
 	}
+	
+	public List<Task> getListUncomplete() {
+		return repo.findListUnComplete();
+	}
+	
+	public List<Task> getListcompleted() {
+		return repo.findListCompleted();
+	}
 }

@@ -11,7 +11,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"
 	rel="stylesheet" />
@@ -23,91 +24,15 @@
 	rel="stylesheet" />
 
 <link rel="stylesheet" href="/css/app.css" />
+<script src="/js/tasks/edit.js"></script>
 </head>
 
-<script type="text/javascript">
-	$(document).ready(
-			function() {
-				var dateInput = $('input[name="scheduled_date"]'); // Our date input has the name "date"
-				var container = $('.bootstrap-iso form').length > 0 ? $(
-						'.bootstrap-iso form').parent() : 'body';
-				dateInput.datepicker({
-					format : 'yyyy/mm/dd',
-					container : container,
-					todayHighlight : true,
-					autoclose : true
-				// <-- THIS WORKS
-				});
 
-			});
-
-	$(document).ready(
-			function() {
-				var dateInput = $('input[name="complete_date"]'); // Our date input has the name "date"
-				var container = $('.bootstrap-iso form').length > 0 ? $(
-						'.bootstrap-iso form').parent() : 'body';
-				dateInput.datepicker({
-					format : 'yyyy/mm/dd',
-					container : container,
-					todayHighlight : true,
-					autoclose : true,
-					startDate : truncateDate(new Date())
-				// <-- THIS WORKS
-				});
-
-				$('#complete_date').datepicker('setStartDate',
-						truncateDate(new Date())); // <-- SO DOES THIS
-			});
-
-	function validateRegistration() {
-		var r = confirm("Do you really want to summit infomation");
-		if (r == true) {
-			var str = [];
-			if ($('#title').val() == "") {
-				str.push("You must enter title");
-			}
-			if ($('#description').val() == "") {
-				str.push("You must enter description");
-			}
-			if ($('#scheduled_date').value == "") {
-				str.push("You must enter scheduled_date");
-			}
-			if ($('#complete_date').value == "") {
-				str.push("You must enter complete_date");
-			}
-			if (str.length > 0) {
-				alert(str.join('\n'));
-				return false;
-			} else {
-				return true;
-			}
-		}
-	};
-
-	/* $(document).ready(function(){
-	    $("#complete_flg").click(function(){
-	        if($(this).is(':checked')){
-	        	$("#complete_flg").val("1"));
-	        
-	        }else{
-	//uncheck - clear input
-	        $("#complete_flg").val("0");
-	       
-	        }
-	    });
-	}); */
-
-	function truncateDate(date) {
-		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-	};
-
-	$('#dd-priority').select2()
-</script>
 <body>
 	<div class="container">
-		<h1>タスク編集</h1>
-		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post"
-			th:object="${task}" th:onSubmit="return validateRegistration()">
+		<h1>タスク変更・閲覧</h1>
+		<form th:action="@{/tasks/update/{id}(id=*{id})}" th:method="post" id="task-form" name="task-form"
+			th:object="${task}">
 			<div class="form-group">
 				<label class="control-label">タイトル</label> <input
 					class="form-control" type="text" th:field="*{title}" />
@@ -155,11 +80,14 @@
 				
 				</div>
 			</div> -->
-			<button class="btn btn-outline-success" type="submit">更新</button>
+			<div class="pull-right form-row">
+				<button class="btn btn-outline-success" type="submit">変更</button>
+				<button class="btn btn-outline-success"
+					onclick="window.location.href='/tasks'" type="button">戻る</button>
+			</div>
+
 		</form>
-		<div class="pull-right">
-			<a class="btn btn-link" href="/tasks">一覧画面へ</a>
-		</div>
+
 	</div>
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sample.model.Task;
 import com.sample.model.TaskValidator;
@@ -35,6 +36,8 @@ public class TaskController {
 //	TaskValidator taskFormValidator;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	List<Task> listComplete = new ArrayList<>();
+    List<Task> listUnComplete = new ArrayList<>();
 	
 //	@InitBinder()
 //	protected void initPersonFormBinder(WebDataBinder binder) {
@@ -44,8 +47,8 @@ public class TaskController {
 	@GetMapping
 	public String index(Model model) {
 	    List<Task> listTasks = service.listALlTask();
-	    List<Task> listComplete = new ArrayList<>();
-	    List<Task> listUnComplete = new ArrayList<>();
+	    listComplete = new ArrayList<>();
+	    listUnComplete = new ArrayList<>();
 	    
 	    for (Task task : listTasks) {
 	    	if (task.getDelete_flg() == 0) {
@@ -97,6 +100,8 @@ public class TaskController {
 	
 	
 	
+	
+	
 	@GetMapping("new")
     public String newTask(Model model) {
         return "tasks/new";
@@ -142,12 +147,38 @@ public class TaskController {
     }
     
     @PostMapping("complete_task/{id}")
-    public String updateWithAjax(@PathVariable int id) {
+    public ModelAndView updateWithAjax(@PathVariable int id) {
+    
         Task task = service.get(id);
         task.setComplete_flg(1);
         task.setUpdated_at(sdf.format(new Date()));
+        
         service.save(task);
-        return "redirect:/tasks";
+        
+        listUnComplete = new ArrayList<>();
+    	listUnComplete = service.getListUncomplete();
+        
+        
+        ModelAndView mv= new ModelAndView("tasks/table_uncomplete::list-uncomplete"); 
+        mv.addObject("listTasksUnComplete",listUnComplete);
+        
+        return mv;
+    }
+    
+    @GetMapping("completed_task/{id}")
+    public ModelAndView getCompletedTask() {
+    	listComplete = new ArrayList<>();
+    	listComplete = service.getListcompleted();
+    	Collections.sort(listComplete, new Comparator<Task>() {
+            @Override
+            public int compare(Task task, Task task2) {
+                return task2.getComplete_date().compareTo(task.getComplete_date());
+            }
+        });
+        System.out.printf(listUnComplete.size() +"");
+    	ModelAndView mv= new ModelAndView("tasks/table_complete::list-complete"); 
+        mv.addObject("listTasksComplete",listComplete);
+        return mv;
     }
 
     @PostMapping("delete/{listId}")
