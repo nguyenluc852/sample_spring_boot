@@ -1,8 +1,16 @@
 @charset "UTF-8";
 
 .btn-outline-danger {
-	margin-bottom: 16px;
 	margin-right: 34px
+}
+
+.btn-outline-primary  {
+	margin-left: 8px;
+}
+
+.button_action {
+	margin-bottom: 32px;
+	margin-top: 16pxl
 }
 
 .form-check {
